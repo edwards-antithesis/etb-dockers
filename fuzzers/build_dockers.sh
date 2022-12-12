@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-./build-tx-fuzzer.sh
-
-BUILDKIT=1 docker build --no-cache -t geth:bad-block-creator -f geth_bad-block-creator.Dockerfile .
-BUILDKIT=1 docker build --no-cache -t geth:bad-block-creator-inst -f geth_bad-block-creator-inst.Dockerfile .
+echo "found: $# : $0 $1"
+if [[ ($# -gt 0 && $1 -eq "inst") ]];
+then
+    podman build --format docker -t geth:bad-block-creator-inst -f geth_bad-block-creator-inst.Dockerfile .
+else
+    podman build --format docker -t geth:bad-block-creator -f geth_bad-block-creator.Dockerfile .
+fi
